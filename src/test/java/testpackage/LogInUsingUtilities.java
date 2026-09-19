@@ -3,6 +3,8 @@ package testpackage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import pompackage.HomePagePOM;
+import pompackage.LogInPOM;
 import utilspackage.ActionsUtility;
 import utilspackage.BrowserUtility;
 import utilspackage.PropertyFileUtility;
@@ -16,6 +18,9 @@ public class LogInUsingUtilities
     static PropertyFileUtility property;
     static BrowserUtility browserUtil;
     static ActionsUtility action;
+
+    static LogInPOM login;
+    static HomePagePOM home;
 
     static WebDriver driver;
 
@@ -40,15 +45,20 @@ public class LogInUsingUtilities
 
         driver = browserUtil.getDriver();
 
-        WebElement userNameField = driver.findElement(By.xpath("//input[@name='username']"));
-        WebElement passwordField = driver.findElement(By.xpath("//input[@name='password']"));
-        WebElement logInButton = driver.findElement(By.xpath("//input[@value='Log In']"));
-
         action = new ActionsUtility(driver);
 
-        action.writeInInputField(userNameField,username);
-        action.writeInInputField(passwordField,password);
-        action.clickOnElement(logInButton);
+        login = new LogInPOM(driver);
+        home = new HomePagePOM(driver);
+
+        action.writeInInputField(login.getUserNameField(),username);
+        action.writeInInputField(login.getPasswordField(),password);
+        action.clickOnElement(login.getLogInButton());
+
+        driver.navigate().back();
+
+        action.clickOnElement(home.getOnlineServiceLink());
+
+
 
 
      }
